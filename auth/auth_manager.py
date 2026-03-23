@@ -37,13 +37,13 @@ def login_form():
             "email": user["email"],
             "roles": roles,
         }
-        st.experimental_rerun()
+        st.rerun()
 
 
 def logout():
     for key in ["authenticated", "user"]:
         st.session_state.pop(key, None)
-    st.experimental_rerun()
+    st.rerun()
 
 
 def is_authenticated() -> bool:
