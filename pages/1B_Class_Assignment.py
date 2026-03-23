@@ -2,6 +2,9 @@ import streamlit as st
 from auth.auth_manager import is_authenticated, has_role
 from db.teacher_classes import assign_class, get_all_assignments, delete_assignment
 from db.base import get_connection
+from components.sidebar import show_sidebar
+
+show_sidebar()
 
 # -------------------------
 # ACCESS CONTROL

@@ -9,6 +9,10 @@ from db.office import (
     get_monthly_collection,
     get_all_payments,
 )
+from components.sidebar import show_sidebar
+
+show_sidebar()
+
 
 # -------------------------
 # ACCESS CONTROL

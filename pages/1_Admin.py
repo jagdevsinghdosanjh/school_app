@@ -9,6 +9,10 @@ from db.dashboard import (
     count_attendance_entries,
     total_fee_collected,
 )
+from components.sidebar import show_sidebar
+
+show_sidebar()
+
 
 # -------------------------
 # ACCESS CONTROL

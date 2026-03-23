@@ -2,6 +2,9 @@ import streamlit as st
 import bcrypt
 from auth.auth_manager import is_authenticated, has_role
 from db.base import get_connection
+from components.sidebar import show_sidebar
+
+show_sidebar()
 
 # -------------------------
 # ACCESS CONTROL

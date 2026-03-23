@@ -4,6 +4,10 @@ from auth.auth_manager import is_authenticated, has_role
 from db.base import get_connection
 from db.parents import create_parent_record, map_parent_to_child
 from db.students import get_student_by_roll
+from components.sidebar import show_sidebar
+
+show_sidebar()
+
 
 # -------------------------
 # ACCESS CONTROL

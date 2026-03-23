@@ -6,6 +6,10 @@ from db.students import get_students_by_class
 from db.attendance import save_attendance
 from db.marks import save_marks
 from db.teacher_classes import get_classes_for_teacher
+from components.sidebar import show_sidebar
+
+show_sidebar()
+
 
 # -------------------------
 # ACCESS CONTROL

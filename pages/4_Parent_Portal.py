@@ -3,6 +3,10 @@ from auth.auth_manager import is_authenticated, has_role
 from db.parents import get_parent_by_user_id, get_children_for_parent
 from db.fees import get_fee_status, get_payment_history
 from db.homework import get_homework_for_class
+from components.sidebar import show_sidebar
+
+show_sidebar()
+
 
 # -------------------------
 # ACCESS CONTROL

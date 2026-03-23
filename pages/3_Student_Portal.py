@@ -5,6 +5,10 @@ from db.attendance import get_attendance_for_student, get_attendance_summary
 from db.marks import get_marks_for_student
 from db.fees import get_fee_status, get_payment_history
 from db.homework import get_homework_for_class
+from components.sidebar import show_sidebar
+
+show_sidebar()
+
 
 # -------------------------
 # ACCESS CONTROL

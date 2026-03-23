@@ -2,6 +2,10 @@ import streamlit as st
 import mysql.connector
 
 from auth.auth_manager import is_authenticated, has_role
+from components.sidebar import show_sidebar
+
+show_sidebar()
+
 
 st.set_page_config(page_title="Admin Panel", layout="wide")
 
