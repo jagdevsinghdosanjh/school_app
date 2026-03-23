@@ -1,13 +1,18 @@
 import streamlit as st
 import mysql.connector
 
+# ---------------------------------------------------
+# MUST BE FIRST STREAMLIT COMMAND
+# ---------------------------------------------------
+st.set_page_config(page_title="Admin Panel", layout="wide")
+
 from auth.auth_manager import is_authenticated, has_role
 from components.sidebar import show_sidebar
 
+# ---------------------------------------------------
+# SIDEBAR (safe to call now)
+# ---------------------------------------------------
 show_sidebar()
-
-
-st.set_page_config(page_title="Admin Panel", layout="wide")
 
 
 # ------------------ DB CONNECTION ------------------
@@ -43,7 +48,7 @@ def get_roles(user_id):
         FROM roles r 
         JOIN user_roles ur ON ur.role_id = r.id
         WHERE ur.user_id = %s
-    """,
+        """,
         (user_id,),
     )
     roles = [r[0] for r in cur.fetchall()]
@@ -61,7 +66,7 @@ def assign_role(user_id, role_name):
         INSERT INTO user_roles (user_id, role_id)
         VALUES (%s, (SELECT id FROM roles WHERE name=%s))
         ON DUPLICATE KEY UPDATE role_id = role_id
-    """,
+        """,
         (user_id, role_name),
     )
 
@@ -78,7 +83,7 @@ def remove_role(user_id, role_name):
         """
         DELETE FROM user_roles 
         WHERE user_id=%s AND role_id=(SELECT id FROM roles WHERE name=%s)
-    """,
+        """,
         (user_id, role_name),
     )
 
@@ -133,7 +138,7 @@ for user in users:
         if st.button(f"Assign {role_to_assign}", key=f"btn_assign_{user['id']}"):
             assign_role(user["id"], role_to_assign)
             st.success(f"Role '{role_to_assign}' assigned to {user['username']}.")
-            st.experimental_rerun()
+            st.rerun()
 
         # Remove role
         st.write("### Remove Role")
@@ -147,7 +152,7 @@ for user in users:
             if st.button(f"Remove {role_to_remove}", key=f"btn_remove_{user['id']}"):
                 remove_role(user["id"], role_to_remove)
                 st.warning(f"Role '{role_to_remove}' removed from {user['username']}.")
-                st.experimental_rerun()
+                st.rerun()
 
         st.markdown("---")
 
@@ -157,9 +162,9 @@ for user in users:
             if st.button("Deactivate Account", key=f"deact_{user['id']}"):
                 set_active_status(user["id"], 0)
                 st.warning(f"{user['username']} deactivated.")
-                st.experimental_rerun()
+                st.rerun()
         else:
             if st.button("Activate Account", key=f"act_{user['id']}"):
                 set_active_status(user["id"], 1)
                 st.success(f"{user['username']} activated.")
-                st.experimental_rerun()
+                st.rerun()
