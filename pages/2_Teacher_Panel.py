@@ -1,0 +1,109 @@
+import streamlit as st
+from auth.auth_manager import is_authenticated, has_role, logout
+from db.students import get_students_by_class
+from db.attendance import save_attendance
+from datetime import date
+
+st.set_page_config(page_title="Teacher Panel", layout="wide")
+
+# --- Access control ---
+if not is_authenticated():
+    st.error("You must be logged in to view this page.")
+    st.stop()
+
+if not has_role("teacher", "admin"):
+    st.error("You do not have permission to view this page.")
+    st.stop()
+
+# --- Header ---
+st.title("Teacher Panel")
+st.caption("Manage your classes, attendance, and student performance.")
+
+col1, col2 = st.columns([2, 1])
+with col1:
+    st.subheader("My Classes")
+    # Placeholder: later fetch from DB: teacher_classes table
+    st.write("• Class 10-A – Mathematics")
+    st.write("• Class 9-B – Science")
+
+with col2:
+    st.subheader("Quick Actions")
+    st.button("Take Attendance")
+    st.button("Enter Marks")
+    st.button("Post Homework")
+
+st.markdown("---")
+
+# --- Attendance section ---
+st.subheader("Attendance")
+
+selected_class = st.selectbox("Select Class", ["10", "9", "8", "7"])
+selected_section = st.selectbox("Section", ["A", "B", "C"])
+
+students = get_students_by_class(selected_class, selected_section)
+
+if not students:
+    st.info("No students found for this class.")
+    st.stop()
+
+att_date = st.date_input("Date", value=date.today())
+
+st.write(f"Attendance for Class {selected_class}-{selected_section}")
+
+status_map = {}
+
+for s in students:
+    status = st.radio(
+        f"{s['roll_no']} - {s['full_name']}",
+        ["present", "absent"],
+        horizontal=True,
+        key=f"att_{s['id']}",
+    )
+    status_map[s["id"]] = status
+
+if st.button("Save Attendance"):
+    save_attendance(
+        class_name=f"{selected_class}-{selected_section}",
+        att_date=att_date,
+        teacher_id=st.session_state["user"]["id"],
+        status_map=status_map,
+    )
+    st.success("Attendance saved successfully.")
+# st.subheader("Attendance")
+# selected_class = st.selectbox("Select class", ["Class 10-A", "Class 9-B"])
+# selected_date = st.date_input("Date")
+
+# st.write(f"Attendance sheet for **{selected_class}** on **{selected_date}**")
+
+# # Placeholder: later load students from DB
+# students = ["Aman", "Simran", "Rahul", "Priya"]
+# attendance = {}
+
+# for s in students:
+#     attendance[s] = st.checkbox(f"{s} present", value=True)
+
+# if st.button("Save Attendance"):
+#     # TODO: insert/update into attendance table
+#     st.success("Attendance saved (placeholder).")
+
+# st.markdown("---")
+
+# --- Marks section ---
+st.subheader("Marks Entry")
+exam_type = st.selectbox("Exam", ["Unit Test 1", "Unit Test 2", "Half Yearly", "Final"])
+subject = st.selectbox("Subject", ["Mathematics", "Science", "English"])
+
+st.write(f"Enter marks for **{selected_class}**, **{subject}**, **{exam_type}**")
+
+marks = {}
+for s in students:
+    marks[s] = st.number_input(f"{s}", min_value=0, max_value=100, value=0, step=1)
+
+if st.button("Save Marks"):
+    # TODO: insert/update into marks table
+    st.success("Marks saved (placeholder).")
+
+st.markdown("---")
+
+if st.button("Logout"):
+    logout()
