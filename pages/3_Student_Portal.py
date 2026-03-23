@@ -4,6 +4,7 @@ from db.students import get_student_by_id
 from db.attendance import get_attendance_for_student, get_attendance_summary
 from db.marks import get_marks_for_student
 from db.fees import get_fee_status, get_payment_history
+from db.homework import get_homework_for_class
 
 # -------------------------
 # ACCESS CONTROL
@@ -87,9 +88,24 @@ with tab3:
 # -------------------------
 # HOMEWORK TAB
 # -------------------------
+
 with tab4:
     st.subheader("Homework")
-    st.info("Homework module coming soon.")
+
+    hw_list = get_homework_for_class(student["class"], student["section"])
+
+    if not hw_list:
+        st.info("No homework assigned yet.")
+    else:
+        for hw in hw_list:
+            with st.expander(f"{hw['subject']} — {hw['title']}"):
+                st.write(hw["description"])
+                st.write(f"**Due Date:** {hw['due_date']}")
+                st.caption(f"Posted on {hw['created_at']}")
+
+# with tab4:
+#     st.subheader("Homework")
+#     st.info("Homework module coming soon.")
 
 # -------------------------
 # FEES TAB

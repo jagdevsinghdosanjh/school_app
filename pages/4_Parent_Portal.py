@@ -2,6 +2,7 @@ import streamlit as st
 from auth.auth_manager import is_authenticated, has_role
 from db.parents import get_parent_by_user_id, get_children_for_parent
 from db.fees import get_fee_status, get_payment_history
+from db.homework import get_homework_for_class
 
 # -------------------------
 # ACCESS CONTROL
@@ -37,6 +38,26 @@ st.write(status)
 st.subheader("Payment History")
 for h in history:
     st.write(h)
+
+
+# -------------------------
+# HOMEWORK SECTION
+# -------------------------
+
+st.subheader("Homework")
+
+child = get_student_by_id(selected_child_id)
+
+hw_list = get_homework_for_class(child["class"], child["section"])
+
+if not hw_list:
+    st.info("No homework assigned.")
+else:
+    for hw in hw_list:
+        with st.expander(f"{hw['subject']} — {hw['title']}"):
+            st.write(hw["description"])
+            st.write(f"**Due Date:** {hw['due_date']}")
+            st.caption(f"Posted on {hw['created_at']}")
 
 
 # from db.parents import get_parent_by_user_id, get_children_for_parent

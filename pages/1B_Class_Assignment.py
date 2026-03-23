@@ -54,7 +54,18 @@ with st.form("assign_form"):
     cls = st.selectbox("Class", ["6", "7", "8", "9", "10"])
     section = st.selectbox("Section", ["A", "B", "C"])
     subject = st.selectbox(
-        "Subject", ["Math", "Science", "English", "Punjabi", "Hindi", "Social Studies"]
+        "Subject",
+        [
+            "Math",
+            "Science",
+            "English",
+            "Punjabi",
+            "Hindi",
+            "Social Studies",
+            "Computer Science",
+            "HPE",
+            "Drawing",
+        ],
     )
 
     submitted = st.form_submit_button("Assign")
