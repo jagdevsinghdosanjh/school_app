@@ -1,23 +1,8 @@
-from typing import List, Dict, Optional
+from typing import List, Dict
 from .base import get_connection
 
 
-def create_parent_record(user_id: int, full_name: str, email: str, phone: str):
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute(
-        """
-        INSERT INTO parents (user_id, full_name, email, phone)
-        VALUES (%s, %s, %s, %s)
-    """,
-        (user_id, full_name, email, phone),
-    )
-    conn.commit()
-    cur.close()
-    conn.close()
-
-
-def get_parent_by_user_id(user_id: int) -> Optional[Dict]:
+def get_parent_by_user_id(user_id: int) -> Dict:
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(
@@ -42,28 +27,13 @@ def get_parent_by_user_id(user_id: int) -> Optional[Dict]:
     return None
 
 
-def map_parent_to_child(parent_id: int, student_id: int):
-    conn = get_connection()
-    cur = conn.cursor()
-    cur.execute(
-        """
-        INSERT IGNORE INTO parent_child (parent_id, student_id)
-        VALUES (%s, %s)
-    """,
-        (parent_id, student_id),
-    )
-    conn.commit()
-    cur.close()
-    conn.close()
-
-
 def get_children_for_parent(parent_id: int) -> List[Dict]:
     conn = get_connection()
     cur = conn.cursor()
     cur.execute(
         """
         SELECT s.id, s.full_name, s.roll_no, s.class, s.section
-        FROM parent_child pc
+        FROM parent_children pc
         JOIN students s ON pc.student_id = s.id
         WHERE pc.parent_id = %s
         ORDER BY s.class, s.roll_no
