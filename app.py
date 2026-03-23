@@ -3,8 +3,8 @@ from auth.auth_manager import login_form, logout, is_authenticated, has_role
 
 st.set_page_config(page_title="School Management System")
 
-if is_authenticated() and has_role("dba"):
-    st.sidebar.page_link("pages/0_DBA_Logout.py", label="DBA Logout")
+# if is_authenticated() and has_role("dba"):
+#     st.sidebar.page_link("pages/0_DBA_Logout.py", label="DBA Logout")
 
 
 def show_nav():
