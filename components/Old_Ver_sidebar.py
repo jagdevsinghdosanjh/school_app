@@ -2,27 +2,12 @@ import streamlit as st
 
 
 def show_sidebar():
-    # -------------------------
-    # SAFETY CHECKS
-    # -------------------------
-    user = st.session_state.get("user", None)
-
-    # If no user object exists → user is not logged in
-    if user is None or not isinstance(user, dict):
-        st.sidebar.info("Please log in to continue.")
+    if "user" not in st.session_state:
+        st.sidebar.info("Please log in.")
         return
 
-    # Extract role safely
-    role = user.get("role", None)
+    role = st.session_state["user"]["role"]
 
-    # If role is missing → corrupted session or incomplete login
-    if role is None:
-        st.sidebar.warning("Session incomplete. Please log in again.")
-        return
-
-    # -------------------------
-    # NAVIGATION TITLE
-    # -------------------------
     st.sidebar.title("Navigation")
 
     # -------------------------
