@@ -16,9 +16,9 @@ def show_nav():
         if has_role("admin"):
             st.sidebar.page_link("pages/1_Admin.py", label="Admin Dashboard")
         if has_role("teacher"):
-            st.sidebar.page_link("pages/2_Teacher.py", label="Teacher Panel")
+            st.sidebar.page_link("pages/2_Teacher_Panel.py", label="Teacher Panel")
         if has_role("student"):
-            st.sidebar.page_link("pages/3_Student.py", label="Student Portal")
+            st.sidebar.page_link("pages/3_Student_Portal.py", label="Student Portal")
 
         if st.sidebar.button("Logout"):
             logout()
