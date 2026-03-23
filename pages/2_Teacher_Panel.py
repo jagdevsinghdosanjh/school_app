@@ -46,7 +46,7 @@ st.markdown("---")
 # ---------------------------------------------------------
 st.subheader("Attendance")
 
-selected_class = st.selectbox("Select Class", ["10", "9", "8", "7"])
+selected_class = st.selectbox("Select Class", ["10", "9", "8", "7", "6"])
 selected_section = st.selectbox("Section", ["A", "B", "C"])
 
 students = get_students_by_class(selected_class, selected_section)
